@@ -1,12 +1,8 @@
 package com.theironyard;
 
 import com.github.javaparser.ParseException;
-import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.expr.BinaryExpr;
-import com.github.javaparser.ast.expr.DoubleLiteralExpr;
-import com.github.javaparser.ast.expr.IntegerLiteralExpr;
-import com.github.javaparser.ast.expr.StringLiteralExpr;
 import net.doughughes.testifier.annotation.Testifier;
+import net.doughughes.testifier.matcher.RegexMatcher;
 import net.doughughes.testifier.output.OutputStreamInterceptor;
 import net.doughughes.testifier.util.SourceCodeExtractor;
 import net.doughughes.testifier.util.TestifierAnnotationReader;
@@ -17,11 +13,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
@@ -176,28 +170,27 @@ public class BasicExpressionsTest {
                 printed.size(), greaterThan(0));
         assertThat("The value printed should be a String.",
                 printed.get(0), instanceOf(String.class));
+    }
 
+    @Test
+    @Testifier(method = "outputConcatenationOfTwoStrings", args = {})
+    public void outputConcatenationOfTwoStringsCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
+        /* arrange */
+
+        /* act */
+        BasicExpressions.outputConcatenationOfTwoStrings();
+
+        /* assert */
+        // read this test's annotations
         TestifierAnnotationReader reader = new TestifierAnnotationReader(
                 this.getClass().getAnnotation(Testifier.class),
-                this.getClass().getMethod("outputConcatenationOfTwoStringsTest").getAnnotation(Testifier.class)
+                this.getClass().getMethod("outputConcatenationOfTwoStringsCodeStructureTest").getAnnotation(Testifier.class)
         );
 
-        SourceCodeExtractor extractor = new SourceCodeExtractor(reader.getSourcePath());
-        List<Node> exprs = extractor.filterFlattenedNodes(BinaryExpr.class, reader.getMethod(), reader.getArgs());
-
-        boolean found = false;
-        for (Node node : exprs) {
-            BinaryExpr expr = (BinaryExpr) node;
-            if (expr.getLeft().getClass().equals(StringLiteralExpr.class) &&
-                    expr.getOperator().name().equals("plus") &&
-                    expr.getRight().getClass().equals(StringLiteralExpr.class)) {
-                found = true;
-                break;
-            }
-        }
-
+        // check the structure of the code
+        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
         assertThat("The method should have two Strings concatenated together",
-                found, is(true));
+                methodDescription, RegexMatcher.matches("^.*?StringLiteralExpr plus StringLiteralExpr.*?$"));
     }
 
     @Test
@@ -214,36 +207,28 @@ public class BasicExpressionsTest {
                 printed.size(), greaterThan(0));
         assertThat("The value printed should be a String.",
                 printed.get(0), instanceOf(String.class));
+    }
 
+    @Test
+    @Testifier(method = "outputConcatenationOfStringAndInteger", args = {})
+    public void outputConcatenationOfStringAndIntegerCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
+        /* arrange */
+
+        /* act */
+        BasicExpressions.outputConcatenationOfStringAndInteger();
+
+        /* assert */
         // read this test's annotations
         TestifierAnnotationReader reader = new TestifierAnnotationReader(
                 this.getClass().getAnnotation(Testifier.class),
-                this.getClass().getMethod("outputConcatenationOfStringAndIntegerTest").getAnnotation(Testifier.class)
+                this.getClass().getMethod("outputConcatenationOfStringAndIntegerCodeStructureTest").getAnnotation(Testifier.class)
         );
 
-        // get the method's binary expressions
-        SourceCodeExtractor extractor = new SourceCodeExtractor(reader.getSourcePath());
-        List<Node> exprs = extractor.filterFlattenedNodes(BinaryExpr.class, reader.getMethod(), reader.getArgs());
-
-        boolean found = false;
-        for (Node node : exprs) {
-            BinaryExpr expr = (BinaryExpr) node;
-            if (    (expr.getLeft().getClass().equals(StringLiteralExpr.class) &&
-                            expr.getOperator().name().equals("plus") &&
-                            expr.getRight().getClass().equals(IntegerLiteralExpr.class)
-                    )
-                            ||
-                    (expr.getLeft().getClass().equals(IntegerLiteralExpr.class) &&
-                            expr.getOperator().name().equals("plus") &&
-                            expr.getRight().getClass().equals(StringLiteralExpr.class)
-                    )   ) {
-                found = true;
-                break;
-            }
-        }
-
+        // check the structure of the code
+        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
         assertThat("The method should concatenate a String and an integer together",
-                found, is(true));
+                methodDescription, RegexMatcher.matches("^.*?((StringLiteralExpr plus IntegerLiteralExpr)|(IntegerLiteralExpr plus StringLiteralExpr)).*?$"));
+
     }
 
     @Test
@@ -260,30 +245,29 @@ public class BasicExpressionsTest {
                 printed.size(), greaterThan(0));
         assertThat("The value printed should be an integer.",
                 printed.get(0), instanceOf(int.class));
-
-        TestifierAnnotationReader reader = new TestifierAnnotationReader(
-                this.getClass().getAnnotation(Testifier.class),
-                this.getClass().getMethod("outputSumOfTwoIntegersTest").getAnnotation(Testifier.class)
-        );
-
-        SourceCodeExtractor extractor = new SourceCodeExtractor(reader.getSourcePath());
-        List<Node> exprs = extractor.filterFlattenedNodes(BinaryExpr.class, reader.getMethod(), reader.getArgs());
-
-        boolean found = false;
-        for (Node node : exprs) {
-            BinaryExpr expr = (BinaryExpr) node;
-            if (expr.getLeft().getClass().equals(IntegerLiteralExpr.class) &&
-                    expr.getOperator().name().equals("plus") &&
-                    expr.getRight().getClass().equals(IntegerLiteralExpr.class)) {
-                found = true;
-                break;
-            }
-        }
-
-        assertThat("The method should add two integers together",
-                found, is(true));
     }
 
+    @Test
+    @Testifier(method = "outputSumOfTwoIntegers", args = {})
+    public void outputSumOfTwoIntegersCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
+        /* arrange */
+
+        /* act */
+        BasicExpressions.outputSumOfTwoIntegers();
+
+        /* assert */
+        // read this test method's annotations
+        TestifierAnnotationReader reader = new TestifierAnnotationReader(
+                this.getClass().getAnnotation(Testifier.class),
+                this.getClass().getMethod("outputSumOfTwoIntegersCodeStructureTest").getAnnotation(Testifier.class)
+        );
+
+        // check the structure of the code
+        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
+        assertThat("The method should add two integers together",
+                methodDescription, RegexMatcher.matches("^.*?IntegerLiteralExpr plus IntegerLiteralExpr.*?$"));
+
+    }
 
     @Test
     @Testifier(method = "outputSumOfTwoDoubles", args = {})
@@ -299,28 +283,26 @@ public class BasicExpressionsTest {
                 printed.size(), greaterThan(0));
         assertThat("The value printed should be a double.",
                 printed.get(0), instanceOf(double.class));
+    }
 
+    @Test
+    @Testifier(method = "outputSumOfTwoDoubles", args = {})
+    public void outputSumOfTwoDoublesCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
+        /* arrange */
+
+        /* act */
+        BasicExpressions.outputSumOfTwoDoubles();
+
+        /* assert */
         TestifierAnnotationReader reader = new TestifierAnnotationReader(
                 this.getClass().getAnnotation(Testifier.class),
-                this.getClass().getMethod("outputSumOfTwoDoublesTest").getAnnotation(Testifier.class)
+                this.getClass().getMethod("outputSumOfTwoDoublesCodeStructureTest").getAnnotation(Testifier.class)
         );
 
-        SourceCodeExtractor extractor = new SourceCodeExtractor(reader.getSourcePath());
-        List<Node> exprs = extractor.filterFlattenedNodes(BinaryExpr.class, reader.getMethod(), reader.getArgs());
-
-        boolean found = false;
-        for (Node node : exprs) {
-            BinaryExpr expr = (BinaryExpr) node;
-            if (expr.getLeft().getClass().equals(DoubleLiteralExpr.class) &&
-                    expr.getOperator().name().equals("plus") &&
-                    expr.getRight().getClass().equals(DoubleLiteralExpr.class)) {
-                found = true;
-                break;
-            }
-        }
-
+        // check the structure of the code
+        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
         assertThat("The method should add two doubles together",
-                found, is(true));
+                methodDescription, RegexMatcher.matches("^.*?DoubleLiteralExpr plus DoubleLiteralExpr.*?$"));
     }
 
     @Test
@@ -337,36 +319,66 @@ public class BasicExpressionsTest {
                 printed.size(), greaterThan(0));
         assertThat("The value printed should be a double.",
                 printed.get(0), instanceOf(double.class));
+    }
 
+    @Test
+    @Testifier(method = "outputSumOfADoubleAndAnInteger", args = {})
+    public void outputSumOfADoubleAndAnIntegerCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
+        /* arrange */
+
+        /* act */
+        BasicExpressions.outputSumOfADoubleAndAnInteger();
+
+        /* assert */
         // read this test's annotations
         TestifierAnnotationReader reader = new TestifierAnnotationReader(
                 this.getClass().getAnnotation(Testifier.class),
-                this.getClass().getMethod("outputSumOfADoubleAndAnIntegerTest").getAnnotation(Testifier.class)
+                this.getClass().getMethod("outputSumOfADoubleAndAnIntegerCodeStructureTest").getAnnotation(Testifier.class)
         );
 
-        // get the method's binary expressions
-        SourceCodeExtractor extractor = new SourceCodeExtractor(reader.getSourcePath());
-        List<Node> exprs = extractor.filterFlattenedNodes(BinaryExpr.class, reader.getMethod(), reader.getArgs());
-
-        boolean found = false;
-        for (Node node : exprs) {
-            BinaryExpr expr = (BinaryExpr) node;
-            if (    (expr.getLeft().getClass().equals(DoubleLiteralExpr.class) &&
-                    expr.getOperator().name().equals("plus") &&
-                    expr.getRight().getClass().equals(IntegerLiteralExpr.class)
-            )
-                    ||
-                    (expr.getLeft().getClass().equals(IntegerLiteralExpr.class) &&
-                            expr.getOperator().name().equals("plus") &&
-                            expr.getRight().getClass().equals(DoubleLiteralExpr.class)
-                    )   ) {
-                found = true;
-                break;
-            }
-        }
-
+        // check the structure of the code
+        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
         assertThat("The method should add an integer and double together",
-                found, is(true));
+                methodDescription, RegexMatcher.matches("^.*?((DoubleLiteralExpr plus IntegerLiteralExpr)|(IntegerLiteralExpr plus DoubleLiteralExpr)).*?$"));
+
+    }
+
+    @Test
+    @Testifier(method = "outputSumOfThreeIntegers", args = {})
+    public void outputSumOfThreeIntegersTest() throws NoSuchMethodException, IOException, ParseException {
+        /* arrange */
+
+        /* act */
+        BasicExpressions.outputSumOfThreeIntegers();
+
+        /* assert */
+        ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
+        assertThat("The value printed should be an integer.",
+                printed.get(0), instanceOf(int.class));
+    }
+
+    @Test
+    @Testifier(method = "outputSumOfThreeIntegers", args = {})
+    public void outputSumOfThreeIntegersCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
+        /* arrange */
+
+        /* act */
+        BasicExpressions.outputSumOfThreeIntegers();
+
+        /* assert */
+        // read this test's annotations
+        TestifierAnnotationReader reader = new TestifierAnnotationReader(
+                this.getClass().getAnnotation(Testifier.class),
+                this.getClass().getMethod("outputSumOfThreeIntegersCodeStructureTest").getAnnotation(Testifier.class)
+        );
+
+        // check the structure of the code
+        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
+        assertThat("The method should add three integers together",
+                methodDescription, RegexMatcher.matches("^.*?IntegerLiteralExpr plus IntegerLiteralExpr plus IntegerLiteralExpr.*?$"));
+
     }
 
 }

@@ -138,5 +138,14 @@ public class BasicExpressions {
 
     }
 
+    /**
+     * Print out the sum of three integers
+     */
+    public static void outputSumOfThreeIntegers() {
+
+        // todo: print sum of three integers
+
+    }
+
 
 }
