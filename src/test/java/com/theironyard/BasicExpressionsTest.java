@@ -29,7 +29,7 @@ import static org.junit.Assert.assertThat;
 public class BasicExpressionsTest {
 
     @Rule
-    public NotifyingWatcher notifyingWatcher = new NotifyingWatcher("http://testifier.doughughes.net/notify");
+    public NotifyingWatcher notifyingWatcher = new NotifyingWatcher("https://tiy-testifier-webapp.herokuapp.com/notify");
 
     @Rule
     public OutputWatcher outputWatcher = new OutputWatcher();
