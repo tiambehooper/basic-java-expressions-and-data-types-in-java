@@ -44,6 +44,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be a boolean keyword.",
                 printed.get(0), isOneOf(true, false));
     }
@@ -58,6 +60,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be a boolean keyword for true.",
                 printed.get(0), equalTo(true));
     }
@@ -72,6 +76,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be a boolean keyword for false.",
                 printed.get(0), equalTo(false));
     }
@@ -86,6 +92,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be a positive integer.",
                 (int) printed.get(0), greaterThanOrEqualTo(0));
     }
@@ -100,6 +108,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be a negative integer.",
                 (int) printed.get(0), lessThan(0));
     }
@@ -114,6 +124,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be a positive double.",
                 (double) printed.get(0), greaterThanOrEqualTo(0.0));
     }
@@ -128,6 +140,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be a negative double.",
                 (double) printed.get(0), lessThan(0.0));
     }
@@ -142,6 +156,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be \"Hello World!\"",
                 printed.get(0), equalTo("Hello World!"));
     }
@@ -156,6 +172,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be a String.",
                 printed.get(0), instanceOf(String.class));
 
@@ -192,6 +210,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be a String.",
                 printed.get(0), instanceOf(String.class));
 
@@ -236,6 +256,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be an integer.",
                 printed.get(0), instanceOf(int.class));
 
@@ -273,6 +295,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be a double.",
                 printed.get(0), instanceOf(double.class));
 
@@ -309,6 +333,8 @@ public class BasicExpressionsTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        assertThat("The method should have printed some output.",
+                printed.size(), greaterThan(0));
         assertThat("The value printed should be a double.",
                 printed.get(0), instanceOf(double.class));
 
