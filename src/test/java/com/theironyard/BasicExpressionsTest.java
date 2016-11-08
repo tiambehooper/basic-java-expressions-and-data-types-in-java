@@ -1,14 +1,9 @@
 package com.theironyard;
 
 import com.github.javaparser.ParseException;
-import net.doughughes.testifier.annotation.Testifier;
 import net.doughughes.testifier.matcher.RegexMatcher;
 import net.doughughes.testifier.output.OutputStreamInterceptor;
-import net.doughughes.testifier.util.SourceCodeExtractor;
-import net.doughughes.testifier.util.TestifierAnnotationReader;
-import net.doughughes.testifier.watcher.NotifyingWatcher;
-import net.doughughes.testifier.watcher.OutputWatcher;
-import org.junit.Rule;
+import net.doughughes.testifier.test.TestifierTest;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -19,17 +14,9 @@ import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
-@Testifier(sourcePath = "./src/main/java/com/theironyard/BasicExpressions.java", clazz = BasicExpressions.class)
-public class BasicExpressionsTest {
-
-    @Rule
-    public NotifyingWatcher notifyingWatcher = new NotifyingWatcher("https://tiy-testifier-webapp.herokuapp.com/notify");
-
-    @Rule
-    public OutputWatcher outputWatcher = new OutputWatcher();
+public class BasicExpressionsTest extends TestifierTest {
 
     @Test
-    @Testifier(method = "outputBoolean", args = {})
     public void outputBooleanTest() {
         /* arrange */
 
@@ -37,7 +24,7 @@ public class BasicExpressionsTest {
         BasicExpressions.outputBoolean();
 
         /* assert */
-        ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
+        ArrayList printed = outputWatcher.getPrinted();
         assertThat("The method should have printed some output.",
                 printed.size(), greaterThan(0));
         assertThat("The value printed should be a boolean keyword.",
@@ -45,7 +32,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputTrue", args = {})
     public void outputTrueTest() {
         /* arrange */
 
@@ -61,7 +47,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputFalse", args = {})
     public void outputFalseTest() {
         /* arrange */
 
@@ -77,7 +62,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputPositiveInteger", args = {})
     public void outputPositiveIntegerTest() {
         /* arrange */
 
@@ -93,7 +77,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputNegativeInteger", args = {})
     public void outputNegativeIntegerTest() {
         /* arrange */
 
@@ -109,7 +92,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputPositiveDouble", args = {})
     public void outputPositiveDoubleTest() {
         /* arrange */
 
@@ -125,7 +107,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputNegativeDouble", args = {})
     public void outputNegativeDoubleTest() {
         /* arrange */
 
@@ -141,7 +122,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputHelloWorld", args = {})
     public void outputHelloWorldTest() {
         /* arrange */
 
@@ -157,7 +137,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputConcatenationOfTwoStrings", args = {})
     public void outputConcatenationOfTwoStringsTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -173,7 +152,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputConcatenationOfTwoStrings", args = {})
     public void outputConcatenationOfTwoStringsCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -181,20 +159,14 @@ public class BasicExpressionsTest {
         BasicExpressions.outputConcatenationOfTwoStrings();
 
         /* assert */
-        // read this test's annotations
-        TestifierAnnotationReader reader = new TestifierAnnotationReader(
-                this.getClass().getAnnotation(Testifier.class),
-                this.getClass().getMethod("outputConcatenationOfTwoStringsCodeStructureTest").getAnnotation(Testifier.class)
-        );
+        String methodSource = codeWatcher.getMainSourceCodeService().getMethodSource("outputConcatenationOfTwoStrings");
 
         // check the structure of the code
-        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
         assertThat("The method should have two Strings concatenated together",
-                methodDescription, RegexMatcher.matches("^.*?StringLiteralExpr plus StringLiteralExpr.*?$"));
+                methodSource, RegexMatcher.matches("(?s)^.*\".*?\" \\+ \".*?\".*$"));
     }
 
     @Test
-    @Testifier(method = "outputConcatenationOfStringAndInteger", args = {})
     public void outputConcatenationOfStringAndIntegerTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -210,7 +182,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputConcatenationOfStringAndInteger", args = {})
     public void outputConcatenationOfStringAndIntegerCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -218,21 +189,14 @@ public class BasicExpressionsTest {
         BasicExpressions.outputConcatenationOfStringAndInteger();
 
         /* assert */
-        // read this test's annotations
-        TestifierAnnotationReader reader = new TestifierAnnotationReader(
-                this.getClass().getAnnotation(Testifier.class),
-                this.getClass().getMethod("outputConcatenationOfStringAndIntegerCodeStructureTest").getAnnotation(Testifier.class)
-        );
+        String source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputConcatenationOfStringAndInteger");
 
-        // check the structure of the code
-        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
         assertThat("The method should concatenate a String and an integer together",
-                methodDescription, RegexMatcher.matches("^.*?((StringLiteralExpr plus IntegerLiteralExpr)|(IntegerLiteralExpr plus StringLiteralExpr)).*?$"));
-
+                source, RegexMatcher.matches("^.*?((StringLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\])|(IntegerLiteralExpr\\[.*?\\] plus StringLiteralExpr\\[.*?\\])).*?$"));
     }
 
+
     @Test
-    @Testifier(method = "outputSumOfTwoIntegers", args = {})
     public void outputSumOfTwoIntegersTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -248,7 +212,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputSumOfTwoIntegers", args = {})
     public void outputSumOfTwoIntegersCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -256,21 +219,14 @@ public class BasicExpressionsTest {
         BasicExpressions.outputSumOfTwoIntegers();
 
         /* assert */
-        // read this test method's annotations
-        TestifierAnnotationReader reader = new TestifierAnnotationReader(
-                this.getClass().getAnnotation(Testifier.class),
-                this.getClass().getMethod("outputSumOfTwoIntegersCodeStructureTest").getAnnotation(Testifier.class)
-        );
+        String source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfTwoIntegers");
 
-        // check the structure of the code
-        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
         assertThat("The method should add two integers together",
-                methodDescription, RegexMatcher.matches("^.*?IntegerLiteralExpr plus IntegerLiteralExpr.*?$"));
+                source, RegexMatcher.matches("^.*?(IntegerLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\]).*?$"));
 
     }
 
     @Test
-    @Testifier(method = "outputSumOfTwoDoubles", args = {})
     public void outputSumOfTwoDoublesTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -286,7 +242,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputSumOfTwoDoubles", args = {})
     public void outputSumOfTwoDoublesCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -294,19 +249,13 @@ public class BasicExpressionsTest {
         BasicExpressions.outputSumOfTwoDoubles();
 
         /* assert */
-        TestifierAnnotationReader reader = new TestifierAnnotationReader(
-                this.getClass().getAnnotation(Testifier.class),
-                this.getClass().getMethod("outputSumOfTwoDoublesCodeStructureTest").getAnnotation(Testifier.class)
-        );
+        String source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfTwoDoubles");
 
-        // check the structure of the code
-        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
         assertThat("The method should add two doubles together",
-                methodDescription, RegexMatcher.matches("^.*?DoubleLiteralExpr plus DoubleLiteralExpr.*?$"));
+                source, RegexMatcher.matches("^.*?DoubleLiteralExpr\\[.*?\\] plus DoubleLiteralExpr\\[.*?\\].*?$"));
     }
 
     @Test
-    @Testifier(method = "outputSumOfADoubleAndAnInteger", args = {})
     public void outputSumOfADoubleAndAnIntegerTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -322,7 +271,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputSumOfADoubleAndAnInteger", args = {})
     public void outputSumOfADoubleAndAnIntegerCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -330,21 +278,13 @@ public class BasicExpressionsTest {
         BasicExpressions.outputSumOfADoubleAndAnInteger();
 
         /* assert */
-        // read this test's annotations
-        TestifierAnnotationReader reader = new TestifierAnnotationReader(
-                this.getClass().getAnnotation(Testifier.class),
-                this.getClass().getMethod("outputSumOfADoubleAndAnIntegerCodeStructureTest").getAnnotation(Testifier.class)
-        );
+        String source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfADoubleAndAnInteger");
 
-        // check the structure of the code
-        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
         assertThat("The method should add an integer and double together",
-                methodDescription, RegexMatcher.matches("^.*?((DoubleLiteralExpr plus IntegerLiteralExpr)|(IntegerLiteralExpr plus DoubleLiteralExpr)).*?$"));
-
+                source, RegexMatcher.matches("^.*?((DoubleLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\])|(IntegerLiteralExpr\\[.*?\\] plus DoubleLiteralExpr\\[.*?\\])).*?$"));
     }
 
     @Test
-    @Testifier(method = "outputSumOfThreeIntegers", args = {})
     public void outputSumOfThreeIntegersTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -360,7 +300,6 @@ public class BasicExpressionsTest {
     }
 
     @Test
-    @Testifier(method = "outputSumOfThreeIntegers", args = {})
     public void outputSumOfThreeIntegersCodeStructureTest() throws NoSuchMethodException, IOException, ParseException {
         /* arrange */
 
@@ -368,17 +307,10 @@ public class BasicExpressionsTest {
         BasicExpressions.outputSumOfThreeIntegers();
 
         /* assert */
-        // read this test's annotations
-        TestifierAnnotationReader reader = new TestifierAnnotationReader(
-                this.getClass().getAnnotation(Testifier.class),
-                this.getClass().getMethod("outputSumOfThreeIntegersCodeStructureTest").getAnnotation(Testifier.class)
-        );
+        String source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfThreeIntegers");
 
-        // check the structure of the code
-        String methodDescription = new SourceCodeExtractor(reader.getSourcePath()).getMethodDescription(reader.getMethod(), reader.getArgs());
         assertThat("The method should add three integers together",
-                methodDescription, RegexMatcher.matches("^.*?IntegerLiteralExpr plus IntegerLiteralExpr plus IntegerLiteralExpr.*?$"));
-
+                source, RegexMatcher.matches("^.*?IntegerLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\].*?$"));
     }
 
 }

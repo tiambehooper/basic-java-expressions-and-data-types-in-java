@@ -1,4 +1,4 @@
-# Exercise: Expressions and Datatypes in Java
+# [Exercise] Expressions and Datatypes in Java
 
 In this exercise we will do the following:
 
