@@ -1,6 +1,7 @@
 package com.theironyard;
 
 import com.github.javaparser.ParseException;
+import net.doughughes.testifier.exception.CannotFindMethodException;
 import net.doughughes.testifier.matcher.RegexMatcher;
 import net.doughughes.testifier.output.OutputStreamInterceptor;
 import net.doughughes.testifier.test.TestifierTest;
@@ -13,6 +14,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class BasicExpressionsTest extends TestifierTest {
 
@@ -159,7 +161,12 @@ public class BasicExpressionsTest extends TestifierTest {
         BasicExpressions.outputConcatenationOfTwoStrings();
 
         /* assert */
-        String methodSource = codeWatcher.getMainSourceCodeService().getMethodSource("outputConcatenationOfTwoStrings");
+        String methodSource = null;
+        try {
+            methodSource = codeWatcher.getMainSourceCodeService().getMethodSource("outputConcatenationOfTwoStrings");
+        } catch (CannotFindMethodException e) {
+            fail(e.getMessage());
+        }
 
         // check the structure of the code
         assertThat("The method should have two Strings concatenated together",
@@ -189,7 +196,12 @@ public class BasicExpressionsTest extends TestifierTest {
         BasicExpressions.outputConcatenationOfStringAndInteger();
 
         /* assert */
-        String source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputConcatenationOfStringAndInteger");
+        String source = null;
+        try {
+            source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputConcatenationOfStringAndInteger");
+        } catch (CannotFindMethodException e) {
+            fail(e.getMessage());
+        }
 
         assertThat("The method should concatenate a String and an integer together",
                 source, RegexMatcher.matches("^.*?((StringLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\])|(IntegerLiteralExpr\\[.*?\\] plus StringLiteralExpr\\[.*?\\])).*?$"));
@@ -219,7 +231,12 @@ public class BasicExpressionsTest extends TestifierTest {
         BasicExpressions.outputSumOfTwoIntegers();
 
         /* assert */
-        String source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfTwoIntegers");
+        String source = null;
+        try {
+            source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfTwoIntegers");
+        } catch (CannotFindMethodException e) {
+            fail(e.getMessage());
+        }
 
         assertThat("The method should add two integers together",
                 source, RegexMatcher.matches("^.*?(IntegerLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\]).*?$"));
@@ -249,7 +266,12 @@ public class BasicExpressionsTest extends TestifierTest {
         BasicExpressions.outputSumOfTwoDoubles();
 
         /* assert */
-        String source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfTwoDoubles");
+        String source = null;
+        try {
+            source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfTwoDoubles");
+        } catch (CannotFindMethodException e) {
+            fail(e.getMessage());
+        }
 
         assertThat("The method should add two doubles together",
                 source, RegexMatcher.matches("^.*?DoubleLiteralExpr\\[.*?\\] plus DoubleLiteralExpr\\[.*?\\].*?$"));
@@ -278,7 +300,12 @@ public class BasicExpressionsTest extends TestifierTest {
         BasicExpressions.outputSumOfADoubleAndAnInteger();
 
         /* assert */
-        String source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfADoubleAndAnInteger");
+        String source = null;
+        try {
+            source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfADoubleAndAnInteger");
+        } catch (CannotFindMethodException e) {
+            fail(e.getMessage());
+        }
 
         assertThat("The method should add an integer and double together",
                 source, RegexMatcher.matches("^.*?((DoubleLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\])|(IntegerLiteralExpr\\[.*?\\] plus DoubleLiteralExpr\\[.*?\\])).*?$"));
@@ -307,7 +334,12 @@ public class BasicExpressionsTest extends TestifierTest {
         BasicExpressions.outputSumOfThreeIntegers();
 
         /* assert */
-        String source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfThreeIntegers");
+        String source = null;
+        try {
+            source = codeWatcher.getMainSourceCodeService().getDescriptionOfMethod("outputSumOfThreeIntegers");
+        } catch (CannotFindMethodException e) {
+            fail(e.getMessage());
+        }
 
         assertThat("The method should add three integers together",
                 source, RegexMatcher.matches("^.*?IntegerLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\].*?$"));
