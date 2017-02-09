@@ -1,5 +1,3 @@
-package com.theironyard;
-
 import com.github.javaparser.ParseException;
 import net.doughughes.testifier.exception.CannotFindMethodException;
 import net.doughughes.testifier.matcher.RegexMatcher;

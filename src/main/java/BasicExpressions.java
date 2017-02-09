@@ -1,5 +1,3 @@
-package com.theironyard;
-
 /**
  * There are a number of methods listed below. Follow the instructions therein
  * and make all of the tests pass. You can run all tests by selecting
