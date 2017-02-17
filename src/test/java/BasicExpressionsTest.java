@@ -25,9 +25,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = outputWatcher.getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputBoolean() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be a boolean keyword.",
+        assertThat("The value printed from outputBoolean() should be a boolean keyword.",
                 printed.get(0), isOneOf(true, false));
     }
 
@@ -40,9 +40,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputTrue() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be a boolean keyword for true.",
+        assertThat("The value printed from outputTrue() should be a boolean keyword for true.",
                 printed.get(0), equalTo(true));
     }
 
@@ -55,9 +55,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputFalse() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be a boolean keyword for false.",
+        assertThat("The value printed from outputFalse() should be a boolean keyword for false.",
                 printed.get(0), equalTo(false));
     }
 
@@ -70,9 +70,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputPositiveInteger() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be a positive integer.",
+        assertThat("The value printed from outputPositiveInteger() should be a positive integer.",
                 (int) printed.get(0), greaterThanOrEqualTo(0));
     }
 
@@ -85,9 +85,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputNegativeInteger() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be a negative integer.",
+        assertThat("The value printed from outputNegativeInteger() should be a negative integer.",
                 (int) printed.get(0), lessThan(0));
     }
 
@@ -100,9 +100,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputPositiveDouble() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be a positive double.",
+        assertThat("The value printed from outputPositiveDouble() should be a positive double.",
                 (double) printed.get(0), greaterThanOrEqualTo(0.0));
     }
 
@@ -115,9 +115,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputNegativeDouble() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be a negative double.",
+        assertThat("The value printed from outputNegativeDouble() should be a negative double.",
                 (double) printed.get(0), lessThan(0.0));
     }
 
@@ -130,9 +130,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputHelloWorld() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be \"Hello World!\"",
+        assertThat("The value printed from outputHelloWorld() should be \"Hello World!\"",
                 printed.get(0), equalTo("Hello World!"));
     }
 
@@ -145,9 +145,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputConcatenationOfTwoStrings() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be a String.",
+        assertThat("The value printed from outputConcatenationOfTwoStrings() should be a String.",
                 printed.get(0), instanceOf(String.class));
     }
 
@@ -167,7 +167,7 @@ public class BasicExpressionsTest extends TestifierTest {
         }
 
         // check the structure of the code
-        assertThat("The method should have two Strings concatenated together",
+        assertThat("The outputConcatenationOfTwoStrings() method should have two Strings concatenated together",
                 methodSource, RegexMatcher.matches("(?s)^.*\".*?\" \\+ \".*?\".*$"));
     }
 
@@ -180,9 +180,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputConcatenationOfStringAndInteger() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be a String.",
+        assertThat("The value printed from outputConcatenationOfStringAndInteger() should be a String.",
                 printed.get(0), instanceOf(String.class));
     }
 
@@ -201,7 +201,7 @@ public class BasicExpressionsTest extends TestifierTest {
             fail(e.getMessage());
         }
 
-        assertThat("The method should concatenate a String and an integer together",
+        assertThat("The outputConcatenationOfStringAndInteger() method should concatenate a String and an integer together",
                 source, RegexMatcher.matches("^.*?((StringLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\])|(IntegerLiteralExpr\\[.*?\\] plus StringLiteralExpr\\[.*?\\])).*?$"));
     }
 
@@ -215,9 +215,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputSumOfTwoIntegers() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be an integer.",
+        assertThat("The value printed from outputSumOfTwoIntegers() should be an integer.",
                 printed.get(0), instanceOf(int.class));
     }
 
@@ -236,7 +236,7 @@ public class BasicExpressionsTest extends TestifierTest {
             fail(e.getMessage());
         }
 
-        assertThat("The method should add two integers together",
+        assertThat("The outputSumOfTwoIntegers() method should add two integers together",
                 source, RegexMatcher.matches("^.*?(IntegerLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\]).*?$"));
 
     }
@@ -250,9 +250,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputSumOfTwoDoubles() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be a double.",
+        assertThat("The value printed from outputSumOfTwoDoubles() should be a double.",
                 printed.get(0), instanceOf(double.class));
     }
 
@@ -271,7 +271,7 @@ public class BasicExpressionsTest extends TestifierTest {
             fail(e.getMessage());
         }
 
-        assertThat("The method should add two doubles together",
+        assertThat("The outputSumOfTwoDoubles() method should add two doubles together",
                 source, RegexMatcher.matches("^.*?DoubleLiteralExpr\\[.*?\\] plus DoubleLiteralExpr\\[.*?\\].*?$"));
     }
 
@@ -284,9 +284,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputSumOfADoubleAndAnInteger() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be a double.",
+        assertThat("The value printed from outputSumOfADoubleAndAnInteger() should be a double.",
                 printed.get(0), instanceOf(double.class));
     }
 
@@ -305,7 +305,7 @@ public class BasicExpressionsTest extends TestifierTest {
             fail(e.getMessage());
         }
 
-        assertThat("The method should add an integer and double together",
+        assertThat("The outputSumOfADoubleAndAnInteger() method should add an integer and double together",
                 source, RegexMatcher.matches("^.*?((DoubleLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\])|(IntegerLiteralExpr\\[.*?\\] plus DoubleLiteralExpr\\[.*?\\])).*?$"));
     }
 
@@ -318,9 +318,9 @@ public class BasicExpressionsTest extends TestifierTest {
 
         /* assert */
         ArrayList printed = ((OutputStreamInterceptor) System.out).getPrinted();
-        assertThat("The method should have printed some output.",
+        assertThat("The outputSumOfThreeIntegers() method should have printed some output.",
                 printed.size(), greaterThan(0));
-        assertThat("The value printed should be an integer.",
+        assertThat("The value printed from outputSumOfThreeIntegers() should be an integer.",
                 printed.get(0), instanceOf(int.class));
     }
 
@@ -339,7 +339,7 @@ public class BasicExpressionsTest extends TestifierTest {
             fail(e.getMessage());
         }
 
-        assertThat("The method should add three integers together",
+        assertThat("The outputSumOfThreeIntegers() method should add three integers together",
                 source, RegexMatcher.matches("^.*?IntegerLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\] plus IntegerLiteralExpr\\[.*?\\].*?$"));
     }
 
